@@ -65,3 +65,7 @@ python_version = "3.11"
 strict = true
 packages = ["tts_pipeline"]
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = ["opentelemetry", "opentelemetry.*", "scipy", "scipy.*", "soundfile", "yaml"]
+ignore_missing_imports = true

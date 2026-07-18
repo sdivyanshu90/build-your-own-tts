@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from contextlib import AbstractContextManager, nullcontext
-from typing import Any, Protocol
+from typing import Any, Protocol, cast
 
 
 class Tracer(Protocol):
@@ -31,4 +31,7 @@ class OpenTelemetryTracer:
     def span(
         self, name: str, attributes: dict[str, Any] | None = None
     ) -> AbstractContextManager[Any]:
-        return self._tracer.start_as_current_span(name, attributes=attributes or {})
+        return cast(
+            AbstractContextManager[Any],
+            self._tracer.start_as_current_span(name, attributes=attributes or {}),
+        )

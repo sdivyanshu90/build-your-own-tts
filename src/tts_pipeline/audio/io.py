@@ -8,10 +8,10 @@ from pathlib import Path
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy.io import wavfile  # type: ignore[import-untyped]
+from scipy.io import wavfile
 
 try:
-    import soundfile as sf  # type: ignore[import-not-found]
+    import soundfile as sf
 except ImportError:  # pragma: no cover - exercised only by minimal installations
     sf = None
 

@@ -22,6 +22,8 @@ def sequence_mask(lengths: torch.Tensor, maximum: int | None = None) -> torch.Te
 
 
 class PositionalEncoding(nn.Module):
+    encoding: torch.Tensor
+
     def __init__(self, hidden: int, maximum: int) -> None:
         super().__init__()
         position = torch.arange(maximum).unsqueeze(1)
@@ -34,7 +36,7 @@ class PositionalEncoding(nn.Module):
     def forward(self, value: torch.Tensor) -> torch.Tensor:
         if value.shape[1] > self.encoding.shape[0]:
             raise ValueError("sequence exceeds configured max_positions")
-        return cast(torch.Tensor, value + self.encoding[: value.shape[1]])
+        return value + self.encoding[: value.shape[1]]
 
 
 class FFTBlock(nn.Module):

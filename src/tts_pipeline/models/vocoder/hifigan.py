@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -54,7 +56,8 @@ class HiFiGANGenerator(nn.Module):
         for upsample, blocks in zip(self.upsamples, self.resblocks, strict=True):
             value = F.leaky_relu(value, 0.1)
             value = upsample(value)
-            value = sum(block(value) for block in blocks) / len(blocks)
+            block_list = cast(nn.ModuleList, blocks)
+            value = sum(cast(ResBlock, block)(value) for block in block_list) / len(block_list)
         return torch.tanh(self.post(F.leaky_relu(value, 0.1)))
 
 

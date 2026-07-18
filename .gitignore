@@ -7,9 +7,8 @@ __pycache__/
 .venv/
 .env
 artifacts/
-data/
+/data/
 runs/
 *.wav
 *.pt
 *.pth
-

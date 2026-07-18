@@ -45,7 +45,7 @@ class AcousticTrainer:
             weight_decay=settings.training.weight_decay,
         )
         self.scheduler = torch.optim.lr_scheduler.ExponentialLR(self.optimizer, 0.999)
-        self.scaler = torch.amp.GradScaler(  # type: ignore[attr-defined]
+        self.scaler = torch.amp.GradScaler(  # type: ignore[attr-defined, unused-ignore]
             "cuda", enabled=settings.training.mixed_precision and self.device.type == "cuda"
         )
         self.state = TrainState()
@@ -120,7 +120,7 @@ class AcousticTrainer:
             batch = {key: value.to(self.device) for key, value in batch.items()}
             with (
                 torch.set_grad_enabled(training),
-                torch.amp.autocast(  # type: ignore[attr-defined]
+                torch.amp.autocast(  # type: ignore[attr-defined, unused-ignore]
                     self.device.type, enabled=self.scaler.is_enabled()
                 ),
             ):

@@ -45,7 +45,7 @@ class VocoderTrainer:
         self.discriminator_scheduler = torch.optim.lr_scheduler.ExponentialLR(
             self.discriminator_optimizer, 0.999
         )
-        self.scaler = torch.amp.GradScaler(  # type: ignore[attr-defined]
+        self.scaler = torch.amp.GradScaler(  # type: ignore[attr-defined, unused-ignore]
             "cuda", enabled=settings.training.mixed_precision and self.device.type == "cuda"
         )
         self.processor = AudioProcessor(settings.audio)
@@ -58,7 +58,7 @@ class VocoderTrainer:
             for batch in loader:
                 mel = batch["mel"].to(self.device)
                 real = batch["waveform"].to(self.device)
-                with torch.amp.autocast(  # type: ignore[attr-defined]
+                with torch.amp.autocast(  # type: ignore[attr-defined, unused-ignore]
                     self.device.type, enabled=self.scaler.is_enabled()
                 ):
                     fake = self.generator(mel)
@@ -70,7 +70,7 @@ class VocoderTrainer:
                 self.discriminator_optimizer.zero_grad(set_to_none=True)
                 self.scaler.scale(discriminator).backward()  # type: ignore[no-untyped-call]
                 self.scaler.step(self.discriminator_optimizer)
-                with torch.amp.autocast(  # type: ignore[attr-defined]
+                with torch.amp.autocast(  # type: ignore[attr-defined, unused-ignore]
                     self.device.type, enabled=self.scaler.is_enabled()
                 ):
                     real_outputs = self.mpd(real) + self.msd(real)

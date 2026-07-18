@@ -9,7 +9,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from scipy.signal import resample_poly  # type: ignore[import-untyped]
+from scipy.signal import resample_poly
 
 from tts_pipeline.audio.io import read_audio, wav_bytes
 from tts_pipeline.config import AudioConfig
