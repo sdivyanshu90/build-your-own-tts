@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from types import SimpleNamespace
 
 import httpx
@@ -13,7 +13,9 @@ from tts_pipeline.serving import create_app
 
 @dataclass
 class FakeSynthesizer:
-    bundle: object = SimpleNamespace(version="test", speakers=("default",))
+    bundle: object = field(
+        default_factory=lambda: SimpleNamespace(version="test", speakers=("default",))
+    )
 
     def synthesize(
         self, text, language, speaker, rate, pitch, energy, output_rate, seed, request_id

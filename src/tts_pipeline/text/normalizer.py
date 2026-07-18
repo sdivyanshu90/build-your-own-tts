@@ -175,9 +175,9 @@ class TextNormalizer:
             "emails",
             re.sub(
                 r"\b([\w.+-]+)@([\w.-]+)\b",
-                lambda m: m.group(1).replace(".", " dot ")
-                + " at "
-                + m.group(2).replace(".", " dot "),
+                lambda m: (
+                    m.group(1).replace(".", " dot ") + " at " + m.group(2).replace(".", " dot ")
+                ),
                 value,
             ),
         )
