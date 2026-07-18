@@ -1,0 +1,17 @@
+ARG PYTORCH_IMAGE=pytorch/pytorch:2.4.1-cuda12.4-cudnn9-runtime
+FROM ${PYTORCH_IMAGE}
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
+RUN apt-get update && apt-get install -y --no-install-recommends libsndfile1 espeak-ng \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --create-home --uid 10001 tts
+WORKDIR /app
+COPY pyproject.toml README.md LICENSE ./
+COPY src ./src
+COPY configs ./configs
+RUN python -m pip install --no-deps . && python -m pip install fastapi pydantic pydantic-settings PyYAML scipy soundfile typer 'uvicorn[standard]' prometheus-client torchaudio
+COPY docker/entrypoint.sh /usr/local/bin/tts-entrypoint
+RUN chmod 0555 /usr/local/bin/tts-entrypoint && mkdir -p /app/artifacts && chown -R tts:tts /app/artifacts
+USER tts
+ENTRYPOINT ["tts-entrypoint"]
+CMD ["tts", "serve", "--config", "configs/development.yaml"]
+
