@@ -1,0 +1,66 @@
+runtime:
+  seed: 1337
+  device: cpu
+  deterministic: true
+audio:
+  sample_rate: 22050
+  n_fft: 1024
+  win_length: 1024
+  hop_length: 256
+  n_mels: 80
+  f_min: 0.0
+  f_max: 8000.0
+  center: true
+  power: 1.0
+  log_floor: 1.0e-5
+  peak_normalize: true
+  trim_silence: true
+  trim_db: 45.0
+text:
+  language: en-US
+  unicode_form: NFKC
+  max_characters: 5000
+  max_tokens_per_chunk: 256
+  unknown_policy: replace
+model:
+  vocabulary_path: artifacts/vocabulary.json
+  hidden_dim: 192
+  encoder_layers: 4
+  decoder_layers: 4
+  attention_heads: 2
+  conv_filter_size: 768
+  dropout: 0.1
+  max_positions: 2048
+  speaker_count: 1
+  language_count: 1
+  variance_filter_size: 256
+  variance_kernel_size: 3
+  postnet_layers: 5
+vocoder:
+  channels: 256
+  upsample_rates: [8, 8, 2, 2]
+  upsample_kernel_sizes: [16, 16, 4, 4]
+  resblock_kernel_sizes: [3, 7, 11]
+training:
+  batch_size: 16
+  epochs: 100
+  learning_rate: 0.0002
+  weight_decay: 0.000001
+  gradient_accumulation: 1
+  gradient_clip: 1.0
+  mixed_precision: false
+  num_workers: 2
+  patience: 10
+  checkpoint_every: 1000
+serving:
+  host: 0.0.0.0
+  port: 8000
+  max_concurrency: 2
+  queue_timeout_seconds: 10.0
+  request_timeout_seconds: 60.0
+  max_request_bytes: 32768
+  expose_normalized_text: false
+  allow_base64: true
+  api_key_env: TTS_API_KEY
+  model_dir: artifacts/demo
+
