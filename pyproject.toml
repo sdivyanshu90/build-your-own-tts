@@ -57,6 +57,9 @@ target-version = "py311"
 select = ["E", "F", "I", "B", "UP", "S", "SIM"]
 ignore = ["S101"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["tts_pipeline"]
+
 [tool.mypy]
 python_version = "3.11"
 strict = true
